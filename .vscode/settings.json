@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "server": "localhost",
+      "port": 9042,
+      "previewLimit": 50,
+      "driver": "Scylla",
+      "name": "SCYLA DB DEV",
+      "database": "kurta",
+      "username": "cassandra",
+      "password": "cassandra"
+    }
+  ]
+}

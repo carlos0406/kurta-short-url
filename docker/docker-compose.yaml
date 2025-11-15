@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  scylladb:
+    image: scylladb/scylla:latest
+    container_name: kurta-scylladb
+    ports:
+      - "9042:9042"
+      - "9160:9160"
+      - "10000:10000"
+    volumes:
+      - scylla-data:/var/lib/scylla
+    environment:
+      - SCYLLA_CLUSTER_NAME=kurta-cluster
+    command: --smp 1 --memory 512M --overprovisioned 1
+    networks:
+      - kurta-network
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe keyspaces"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: kurta-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - kurta-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  kurta-network:
+    driver: bridge
+
+volumes:
+  scylla-data:
+    driver: local
+  redis-data:
+    driver: local

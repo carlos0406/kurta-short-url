@@ -1,0 +1,8 @@
+###
+POST http://localhost:3000/shorturl
+Content-Type: application/json
+
+{
+  "name": "my first short url4my first23 short url4",
+  "originalUrl": "https://example123.com"
+}
