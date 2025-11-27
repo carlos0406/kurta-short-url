@@ -1,8 +1,16 @@
 import z from 'zod';
 
-export const createShortUrlDto = z.object({
+export const createShortUrlInputDto = z.object({
   originalUrl: z.string(),
   name: z.string().min(1).max(50),
 });
 
-export type CreateShortUrlDto = z.infer<typeof createShortUrlDto>;
+export const createShortUrlUseCaseInputDto = createShortUrlInputDto.extend({
+  createdBy: z.string().min(1),
+  createdByOrganization: z.string(),
+});
+
+export type CreateShortUrlInputDto = z.infer<typeof createShortUrlInputDto>;
+export type CreateShortUrlUseCaseInputDto = z.infer<
+  typeof createShortUrlUseCaseInputDto
+>;

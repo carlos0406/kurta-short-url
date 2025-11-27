@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   scylladb:
@@ -37,6 +36,25 @@ services:
       timeout: 5s
       retries: 5
 
+  postgres:
+    image: postgres:alpine
+    container_name: kurta-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=kurta
+      - POSTGRES_PASSWORD=kurta
+      - POSTGRES_DB=kurta
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - kurta-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kurta"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 networks:
   kurta-network:
     driver: bridge
@@ -45,4 +63,6 @@ volumes:
   scylla-data:
     driver: local
   redis-data:
+    driver: local
+  postgres-data:
     driver: local

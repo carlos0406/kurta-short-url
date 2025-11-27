@@ -1,5 +1,6 @@
 import { Client } from 'cassandra-driver';
 import { config } from '../config/config';
+import { PrismaService } from './services/prisma.service';
 
 export const databaseProviders = [
   {
@@ -10,6 +11,12 @@ export const databaseProviders = [
         localDataCenter: config.DBDATACENTER,
         keyspace: config.DBKEYSPACE,
       });
+    },
+  },
+  {
+    provide: 'PRISMA_SERVICE',
+    useFactory: () => {
+      return new PrismaService();
     },
   },
 ];

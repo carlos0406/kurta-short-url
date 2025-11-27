@@ -1,0 +1,1 @@
+npx @better-auth/cli generate --config src/auth/auth.ts --output prisma/schema.prisma2

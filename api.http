@@ -3,6 +3,70 @@ POST http://localhost:3000/shorturl
 Content-Type: application/json
 
 {
-  "name": "my first short url4my first23 short url4",
+  "name": "my first short url4my first23 short url1234",
   "originalUrl": "https://example123.com"
+}
+
+###
+
+GET http://localhost:3000/shorturl/Y1zIM
+
+
+### 
+
+GET http://localhost:3000/shorturl
+
+
+### Criar usuário
+POST http://localhost:3000/api/auth/sign-up/email
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "email": "carlos@example1.com",
+  "password": "12345678",
+  "name": "Carlos"
+}
+
+
+###
+
+POST http://localhost:3000/api/auth/sign-in/email
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "email": "carlos@example.com",
+  "password": "12345678"
+}
+
+
+### Quando você cria uma org, você vira owner automaticamente
+POST http://localhost:3000/api/auth/organization/create
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "name": "Tech Startup",
+  "slug": "tech-startup6"
+}
+
+
+###
+
+GET http://localhost:3000/api/auth/get-session
+Origin: http://localhost:3000
+
+###
+GET http://localhost:3000/api/auth/organization/list
+
+
+### Ativar a organization
+// coloca a org como ativa na sessão
+POST http://localhost:3000/api/auth/organization/set-active
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "organizationId": "nmE4NFW1brHfbJe5Qjt5JpTEfLSs8dKV"
 }

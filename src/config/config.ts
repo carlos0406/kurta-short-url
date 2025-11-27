@@ -11,6 +11,10 @@ const envSchema = z.object({
     .string()
     .transform((val) => parseInt(val, 10))
     .default(6379),
+  SECRET_KEY: z.string().default('my-secret-key-change-in-production'),
+  DATABASE_URL: z
+    .string()
+    .default('postgresql://kurta:kurta@localhost:5432/kurta?schema=public'),
 });
 
 export type Config = z.infer<typeof envSchema>;

@@ -24,9 +24,12 @@ export class CassandraShortUrlRepository implements IShortUrlRepository {
     );
   }
 
-  async findById(id: string): Promise<ShortUrl | null> {
-    const query = 'SELECT * FROM short_url WHERE id = ?';
-    const result = await this.client.execute(query, [id], { prepare: true });
+  async findById(id: string, organizationId: string): Promise<ShortUrl | null> {
+    const query =
+      'SELECT * FROM short_url WHERE id = ? AND created_by_organization = ? ALLOW FILTERING';
+    const result = await this.client.execute(query, [id, organizationId], {
+      prepare: true,
+    });
 
     if (result.rowLength === 0) {
       return null;
@@ -40,6 +43,26 @@ export class CassandraShortUrlRepository implements IShortUrlRepository {
       row.created_at,
       row.created_by,
       row.created_by_organization,
+    );
+  }
+
+  async findAll(organizationId: string): Promise<ShortUrl[]> {
+    const query =
+      'SELECT * FROM short_url WHERE created_by_organization = ? ALLOW FILTERING';
+    const result = await this.client.execute(query, [organizationId], {
+      prepare: true,
+    });
+
+    return result.rows.map(
+      (row) =>
+        new ShortUrl(
+          row.id,
+          row.original_url,
+          row.name,
+          row.created_at,
+          row.created_by,
+          row.created_by_organization,
+        ),
     );
   }
 }

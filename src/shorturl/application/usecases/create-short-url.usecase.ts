@@ -1,7 +1,7 @@
 import { IShortUrlRepository } from '../../domain/repositories/short-url.repository.interface';
 import { ShortUrl } from '../../domain/entities/short-url.entity';
-import { CreateShortUrlDto } from '../dtos/create-short-url.dto';
-import { ShortUrlResponseDto } from '../dtos/short-url-response.dto';
+import { CreateShortUrlUseCaseInputDto } from '../dtos/create-short-url.dto';
+import { ShortUrlCreateResponseDto } from '../dtos/short-url-response.dto';
 import { IIdGeneratorService } from '../../infrastructure/services/id-generator.service';
 
 export class CreateShortUrlUseCase {
@@ -10,19 +10,21 @@ export class CreateShortUrlUseCase {
     private readonly idGeneratorService: IIdGeneratorService,
   ) {}
 
-  async execute(input: CreateShortUrlDto): Promise<ShortUrlResponseDto> {
+  async execute(
+    input: CreateShortUrlUseCaseInputDto,
+  ): Promise<ShortUrlCreateResponseDto> {
     const id = await this.idGeneratorService.generate();
 
     const shortUrl = ShortUrl.create(
       id,
       input.originalUrl,
       input.name,
-      'system',
-      'default',
+      input.createdBy,
+      input.createdByOrganization,
     );
 
     await this.shortUrlRepository.create(shortUrl);
 
-    return new ShortUrlResponseDto(id);
+    return new ShortUrlCreateResponseDto(id);
   }
 }
